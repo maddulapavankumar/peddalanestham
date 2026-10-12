@@ -1,0 +1,61 @@
+{
+  "entities": {
+    "Driver": {
+      "title": "Driver",
+      "description": "Registered auto driver details and online availability status",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "autoNumber": { "type": "string", "maxLength": 30 },
+        "currentLocation": { "type": "string", "maxLength": 200 },
+        "lat": { "type": "number" },
+        "lng": { "type": "number" },
+        "city": { "type": "string", "maxLength": 100 },
+        "isOnline": { "type": "boolean" },
+        "rating": { "type": "number" },
+        "userId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "maxLength": 100 },
+        "updatedAt": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["name", "phone", "autoNumber", "currentLocation", "isOnline"]
+    },
+    "RideRequest": {
+      "title": "RideRequest",
+      "description": "Real-time auto booking request sent to online drivers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "passengerName": { "type": "string", "maxLength": 100 },
+        "passengerPhone": { "type": "string", "maxLength": 20 },
+        "pickupLocation": { "type": "string", "maxLength": 200 },
+        "destination": { "type": "string", "maxLength": 200 },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "accepted", "rejected", "cancelled", "completed"]
+        },
+        "targetDriverId": { "type": "string", "maxLength": 128 },
+        "acceptedDriverId": { "type": "string", "maxLength": 128 },
+        "driverName": { "type": "string", "maxLength": 100 },
+        "driverPhone": { "type": "string", "maxLength": 20 },
+        "autoNumber": { "type": "string", "maxLength": 30 },
+        "driverLocation": { "type": "string", "maxLength": 200 },
+        "rideOtp": { "type": "string", "maxLength": 10 },
+        "createdAt": { "type": "string", "maxLength": 100 },
+        "updatedAt": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["passengerName", "pickupLocation", "destination", "status"]
+    }
+  },
+  "firestore": {
+    "/drivers/{driverId}": {
+      "schema": "Driver",
+      "description": "Registered auto drivers and their online availability status"
+    },
+    "/rideRequests/{requestId}": {
+      "schema": "RideRequest",
+      "description": "Real-time ride requests created by passengers and accepted/rejected by drivers"
+    }
+  }
+}

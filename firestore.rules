@@ -1,0 +1,55 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128;
+    }
+
+    function isValidDriver(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.phone is string && data.phone.size() > 0 && data.phone.size() <= 20 &&
+             data.autoNumber is string && data.autoNumber.size() > 0 && data.autoNumber.size() <= 30 &&
+             data.currentLocation is string && data.currentLocation.size() <= 200 &&
+             data.isOnline is bool;
+    }
+
+    function isValidRideRequest(data) {
+      return data.passengerName is string && data.passengerName.size() > 0 && data.passengerName.size() <= 100 &&
+             data.pickupLocation is string && data.pickupLocation.size() > 0 && data.pickupLocation.size() <= 200 &&
+             data.destination is string && data.destination.size() > 0 && data.destination.size() <= 200 &&
+             data.status in ['pending', 'accepted', 'rejected', 'cancelled', 'completed'];
+    }
+
+    // Connectivity test document
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+
+    // Registered Auto Drivers collection
+    match /drivers/{driverId} {
+      allow get: if isValidId(driverId);
+      allow list: if true;
+      allow create: if isValidId(driverId) && isValidDriver(request.resource.data);
+      allow update: if isValidId(driverId) && isValidDriver(request.resource.data);
+      allow delete: if isValidId(driverId);
+    }
+
+    // Realtime Ride Requests collection
+    match /rideRequests/{requestId} {
+      allow get: if isValidId(requestId);
+      allow list: if true;
+      allow create: if isValidId(requestId) && isValidRideRequest(request.resource.data);
+      allow update: if isValidId(requestId);
+      allow delete: if isValidId(requestId);
+    }
+  }
+}

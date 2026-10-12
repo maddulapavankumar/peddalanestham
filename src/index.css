@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@layer base {
+  html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    overscroll-behavior: none;
+    font-family: 'Noto Sans Telugu', system-ui, -apple-system, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  #root {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /*
+   * Immediate single-touch responsiveness for all buttons and cards.
+   * Eliminates 300ms mobile delay and prevents double-tap zoom delay on iOS Safari.
+   * touch-action: pan-y manipulation enables immediate native scrolling when finger moves over buttons.
+   */
+  button, [role="button"], a, input, select {
+    touch-action: pan-y manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+
+  input, textarea {
+    user-select: text;
+    -webkit-user-select: text;
+  }
+
+  /*
+   * Ultra-smooth, responsive native iOS Safari momentum vertical scrolling.
+   * -webkit-overflow-scrolling: touch provides 60/120fps inertia.
+   * Removed will-change: scroll-position which causes WebKit layer freezes and hitching on iOS.
+   */
+  .smooth-scroll-container {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
+    scroll-behavior: auto;
+  }
+
+  /* Horizontal sub-scroll lists (like filter chips) */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
+  }
+
+  /* Interactive maps manage their own drag & zoom gestures */
+  .leaflet-container, .leaflet-container * {
+    touch-action: auto !important;
+  }
+
+  /* Prevent iOS Safari hover stickiness on touch screens */
+  @media (hover: none) and (pointer: coarse) {
+    button, [role="button"], a {
+      -webkit-tap-highlight-color: transparent;
+    }
+  }
+}
+
+

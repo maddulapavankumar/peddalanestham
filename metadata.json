@@ -1,0 +1,6 @@
+{
+  "name": "పెద్దల నేస్తం (Peddala Nestham)",
+  "description": "అవసరమైనప్పుడు… మీకు ఒక నేస్తం ❤️ - వృద్ధుల కోసం రూపొందించిన సులభమైన సహాయక యాప్.",
+  "requestFramePermissions": ["geolocation", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
